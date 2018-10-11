@@ -159,7 +159,7 @@ describe 'ActiveRecord Obstacle Course' do
     expect(orders_less_than_550).to eq(expected_result)
   end
 
-  it '9. finds orders for a user' do
+  xit '9. finds orders for a user' do
     expected_result = [order_3, order_6, order_9, order_12, order_15]
 
     # ----------------------- Using Ruby -------------------------
@@ -195,7 +195,7 @@ describe 'ActiveRecord Obstacle Course' do
   # ========================
 
 
- it '11. sorts the orders from least expensive to most expensive' do
+ xit '11. sorts the orders from least expensive to most expensive' do
     expected_result = [order_1, order_2, order_3, order_4, order_5, order_6, order_7, order_9, order_8, order_10, order_11, order_12, order_13, order_14, order_15]
 
     # ----------------------- Using Ruby -------------------------
@@ -203,7 +203,7 @@ describe 'ActiveRecord Obstacle Course' do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+    orders = Order.order(amount: :ASC)
     # ------------------------------------------------------------
 
     # Expectation
@@ -219,7 +219,7 @@ xit '12. should return all items except items: 3, 4 & 5' do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+    items = Item.where.not(id: items_not_included)
     # ------------------------------------------------------------
 
     # Expectation
@@ -235,7 +235,8 @@ xit "13. groups an order's items by name" do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+    grouped_items = Order.find(3).items.order(:name)
+
     # ------------------------------------------------------------
 
     # Expectation
@@ -250,7 +251,7 @@ xit '14. plucks all values from one column' do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+    names = Item.all.pluck(:name)
     # ------------------------------------------------------------
 
     # Expectation
@@ -285,7 +286,8 @@ xit '15. gets all item names associated with all orders' do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+
+    names = Item.joins(:orders).pluck(:name)
     # ------------------------------------------------------------
 
     # Expectation
@@ -298,7 +300,7 @@ xit '15. gets all item names associated with all orders' do
   # ========================
 
 
-xit '16. returns the names of users who ordered one specific item' do
+it '16. returns the names of users who ordered one specific item' do
     expected_result = [user_3.name, user_2.name]
 
     # ----------------------- Using Raw SQL-----------------------
