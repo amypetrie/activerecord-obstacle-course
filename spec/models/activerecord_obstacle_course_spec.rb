@@ -77,7 +77,7 @@ describe 'ActiveRecord Obstacle Course' do
     expect(order_id).to eq(order_15.id)
   end
 
-  it '4. finds orders of multiple amounts' do
+  xit '4. finds orders of multiple amounts' do
     # ----------------------- Using Ruby -------------------------
     orders_of_500_and_700 = Order.all.select do |order|
       order.amount == 500 || order.amount == 700
@@ -98,7 +98,7 @@ describe 'ActiveRecord Obstacle Course' do
     expect(orders_of_700_and_1000.count).to eq(2)
   end
 
-  it '5. finds multiple items by id' do
+  xit '5. finds multiple items by id' do
     ids = [item_1.id, item_2.id, item_4.id]
 
     # ----------------------- Using Ruby -------------------------
@@ -113,7 +113,7 @@ describe 'ActiveRecord Obstacle Course' do
     expect(items).to eq([item_1, item_2, item_4])
   end
 
-  it '6. finds multiple orders by id' do
+  xit '6. finds multiple orders by id' do
     ids = [order_1.id, order_3.id, order_5.id, order_7.id]
     expected_result = [order_1, order_3, order_5, order_7]
 
@@ -300,7 +300,7 @@ xit '15. gets all item names associated with all orders' do
   # ========================
 
 
-it '16. returns the names of users who ordered one specific item' do
+xit '16. returns the names of users who ordered one specific item' do
     expected_result = [user_3.name, user_2.name]
 
     # ----------------------- Using Raw SQL-----------------------
@@ -316,7 +316,8 @@ it '16. returns the names of users who ordered one specific item' do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+
+    User.joins(orders: :order_items).where(order_items: {item_id: item_8.id}).pluck(:name).uniq
     # ------------------------------------------------------------
 
     # Expectation
@@ -331,7 +332,7 @@ xit '17. returns the name of items associated with a specific order' do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+    names = Order.last.items.pluck(:name)
     # ------------------------------------------------------------
 
     # Expectation
@@ -355,7 +356,7 @@ xit '18. returns the names of items for a users order' do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+    names = Order.where(user_id: 3).first(3).last.items.pluck(:name)
     # ------------------------------------------------------------
 
     # Expectation
