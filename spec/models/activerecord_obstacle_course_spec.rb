@@ -490,7 +490,7 @@ xit '18. returns the names of items for a users order' do
   # ========================
 
 
-xit '26. returns the names of items that are associated with one or more orders' do
+ xit '26. returns the names of items that are associated with one or more orders' do
     unordered_item_1 = Item.create(name: 'Unordered Item_1')
     unordered_item_2 = Item.create(name: 'Unordered Item2_')
     unordered_item_3 = Item.create(name: 'Unordered Item_3')
@@ -509,7 +509,7 @@ xit '26. returns the names of items that are associated with one or more orders'
     # ------------------------------------------------------------
 
     # ------------------ ActiveRecord Solution ----------------------
-    # Solution goes here
+    ordered_items_names = Item.joins(:order_items).distinct.pluck(:name)
     # When you find a solution, experiment with adjusting your method chaining
     # Which ones are you able to switch around without relying on Ruby's Enumerable methods?
     # ---------------------------------------------------------------
@@ -519,7 +519,7 @@ xit '26. returns the names of items that are associated with one or more orders'
     expect(ordered_items_names).to_not include(unordered_items)
   end
 
-  xit '27. returns a table of information for all users orders' do
+  it '27. returns a table of information for all users orders' do
     custom_results = [user_3, user_1, user_2]
 
     # using a single ActiveRecord call, fetch a joined object that mimics the
@@ -531,7 +531,7 @@ xit '26. returns the names of items that are associated with one or more orders'
     # Sal        |         5
 
     # ------------------ ActiveRecord Solution ----------------------
-    # custom_results =
+    custom_results = 
     # ---------------------------------------------------------------
 
     expect(custom_results[0].name).to eq(user_3.name)
