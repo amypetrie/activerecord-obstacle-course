@@ -363,20 +363,21 @@ xit '18. returns the names of items for a users order' do
     expect(items_for_user_3_third_order).to eq(expected_result)
   end
 
-xit '19. returns the average amount for all orders' do
+ xit '19. returns the average amount for all orders' do
     # ---------------------- Using Ruby -------------------------
     average = (Order.all.map(&:amount).inject(:+)) / (Order.count)
     # -----------------------------------------------------------
 
-    # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
-    # ------------------------------------------------------------
+
+    # ------------------ Using ActiveRecord----------------------
+    average = Order.average(:amount)
+    #-------------------------------------------------------------
 
     # Expectation
     expect(average).to eq(650)
   end
 
-xit '20. returns the average amount for all orders for one user' do
+ xit '20. returns the average amount for all orders for one user' do
     # ---------------------- Using Ruby -------------------------
     orders = Order.all.map do |order|
       order if order.user_id == 3
@@ -386,7 +387,7 @@ xit '20. returns the average amount for all orders for one user' do
     # -----------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    # Solution goes here
+    average = Order.where(user_id: 3).average(:amount)
     # ------------------------------------------------------------
 
     # Expectation
@@ -398,20 +399,20 @@ xit '20. returns the average amount for all orders for one user' do
   # ========================
 
 
-xit '21. calculates the total sales' do
+ xit '21. calculates the total sales' do
     # ---------------------- Using Ruby -------------------------
     total_sales = Order.all.map(&:amount).inject(:+)
     # -----------------------------------------------------------
 
     # ------------------ Using ActiveRecord ---------------------
-    # Solution goes here
+    total_sales = Order.sum(:amount)
     # -----------------------------------------------------------
 
     # Expectation
     expect(total_sales).to eq(9750)
   end
 
-xit '22. calculates the total sales for all but one user' do
+ xit '22. calculates the total sales for all but one user' do
     # ---------------------- Using Ruby -------------------------
     orders = Order.all.map do |order|
       order if order.user_id != 2
@@ -420,14 +421,14 @@ xit '22. calculates the total sales for all but one user' do
     # -----------------------------------------------------------
 
     # ------------------ Using ActiveRecord ---------------------
-    # Solution goes here
+    total_sales = Order.where('user_id != 2').sum(:amount)
     # -----------------------------------------------------------
 
     # Expectation
     expect(total_sales).to eq(6500)
   end
 
-xit '23. returns all orders which include item_4' do
+ xit '23. returns all orders which include item_4' do
     expected_result = [order_3, order_5, order_9, order_10, order_11, order_13, order_15]
 
     # ------------------ Inefficient Solution -------------------
@@ -436,14 +437,14 @@ xit '23. returns all orders which include item_4' do
     # -----------------------------------------------------------
 
     # ------------------ Improved Solution ----------------------
-    #  Solution goes here
+    orders = Order.joins(:order_items).where(order_items: {item_id: item_4.id})
     # -----------------------------------------------------------
 
     # Expectation
     expect(orders).to eq(expected_result)
   end
 
-xit '24. returns all orders for user 2 which include item_4' do
+ xit '24. returns all orders for user 2 which include item_4' do
     expected_result = [order_5, order_11]
 
     # ------------------ Inefficient Solution -------------------
@@ -453,14 +454,14 @@ xit '24. returns all orders for user 2 which include item_4' do
     # -----------------------------------------------------------
 
     # ------------------ Improved Solution ----------------------
-    #  Solution goes here
+    orders = Order.joins(:order_items).where(order_items: {item_id: item_4}).where(user_id: user_2)
     # -----------------------------------------------------------
 
     # Expectation
     expect(orders).to eq(expected_result)
   end
 
-xit '25. returns items that are associated with one or more orders' do
+ xit '25. returns items that are associated with one or more orders' do
     unordered_item = Item.create(name: 'Unordered Item')
     expected_result = [item_1, item_2, item_3, item_4, item_5, item_7, item_8, item_9, item_10]
 
@@ -475,7 +476,7 @@ xit '25. returns items that are associated with one or more orders' do
     # ------------------------------------------------------------
 
     # ------------------ ActiveRecord Solution ----------------------
-    # Solution goes here
+    ordered_items = Item.joins(:order_items).distinct
     # ---------------------------------------------------------------
 
     # Expectations
