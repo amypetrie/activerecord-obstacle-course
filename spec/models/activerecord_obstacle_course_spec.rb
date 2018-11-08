@@ -70,7 +70,7 @@ describe 'ActiveRecord Obstacle Course' do
     # ------------------------------------------------------------
 
     # ------------------ Using ActiveRecord ----------------------
-    order_id = Order.order(:amount).last.id
+    order_id = Order.order(amount: :desc).first[:id]
     # ------------------------------------------------------------
 
     # Expectation
